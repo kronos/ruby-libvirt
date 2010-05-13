@@ -54,7 +54,7 @@ VALUE e_RetrieveError;       // RetrievalError - error during data retrieval
  * array with two entries of type Libvirt::Version.
  *
  */
-VALUE libvirt_version(VALUE m, VALUE t)
+static VALUE libvirt_version(VALUE m, VALUE t)
 {
   unsigned long libVer;
   const char *type = NULL;
@@ -80,12 +80,12 @@ VALUE libvirt_version(VALUE m, VALUE t)
   return result;
 }
 
-static void vir_error(VALUE exception)
+void vir_error(VALUE exception)
 {
   rb_exc_raise(exception);
 }
 
-static char *get_string_or_nil(VALUE arg)
+char *get_string_or_nil(VALUE arg)
 {
   if (TYPE(arg) == T_NIL)
     return NULL;
@@ -95,7 +95,7 @@ static char *get_string_or_nil(VALUE arg)
     rb_raise(rb_eTypeError, "wrong argument type (expected String or nil)");  return NULL;
 }
 
-static VALUE create_error(VALUE error, const char* method, const char* msg, virConnectPtr conn)
+VALUE create_error(VALUE error, const char* method, const char* msg, virConnectPtr conn)
 {
   VALUE ruby_errinfo;
   virErrorPtr err;
@@ -130,22 +130,22 @@ static VALUE create_error(VALUE error, const char* method, const char* msg, virC
   return ruby_errinfo;
 };
 
-static void domain_free(void *d)
+void domain_free(void *d)
 {
   generic_free(Domain, d);
 }
 
-static virDomainPtr domain_get(VALUE s)
+virDomainPtr domain_get(VALUE s)
 {
   generic_get(Domain, s);
 }
 
-static VALUE domain_new(virDomainPtr d, VALUE conn)
+VALUE domain_new(virDomainPtr d, VALUE conn)
 {
   return generic_new(c_domain, d, conn, domain_free);
 }
 
-static VALUE generic_new(VALUE klass, void *ptr, VALUE conn, RUBY_DATA_FUNC free_func)
+VALUE generic_new(VALUE klass, void *ptr, VALUE conn, RUBY_DATA_FUNC free_func)
 {
   VALUE result;
   result = Data_Wrap_Struct(klass, NULL, free_func, ptr);
