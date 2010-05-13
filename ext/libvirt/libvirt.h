@@ -29,6 +29,18 @@
 #include <libvirt/libvirt.h>
 #include <libvirt/virterror.h>
 #include "extconf.h"
+#include "connect.h"
+#include "domain.h"
+
+#if HAVE_TYPE_VIRNETWORKPTR
+#  include "network.h"
+#endif
+#if HAVE_TYPE_VIRSTORAGEPOOLPTR
+#  include "storage_pool.h"
+#endif
+#if HAVE_TYPE_VIRSTORAGEVOLPTR
+#  include "storage_vol.h"
+#endif
 
 
 // Ruby 1.9 compability
