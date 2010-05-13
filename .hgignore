@@ -1,0 +1,7 @@
+~$
+.o$
+.so$
+Makefile$
+^pkg/
+^ext/libvirt/mkmf.log$
+^doc/site/api

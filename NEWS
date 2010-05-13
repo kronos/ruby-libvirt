@@ -1,0 +1,36 @@
+2008-11-18 0.1.0
+  * Add binding for virConnectFindStoragePoolSources (clalance)
+  * Fix dom_migrate (clalance)
+  * Add the MIGRATE_LIVE (enum virDomainMigrateFlags) flag
+  * Slight improvements of the unit tests
+
+2008-04-15 0.0.7
+  * Binding for virDomainMigrate
+  * Fix crash caused by using virResetError
+  * More sensible message included in exceptions
+
+2008-04-02 0.0.6
+  * Fix test failure exposed by the Fedora builders
+
+2008-04-02 0.0.5
+  * Explicit free methods for various objects (based on a patch by
+    Vadim Zaliva)
+  * Make the FLAGS argument for various calls optional, and default it
+    to 0. (Chris Lalancette)
+  * More finegrained exceptions on errors, containing libvirt error message
+    (Mohammed Morsi)
+
+2008-04-01 0.0.4
+  * Bindings for the libvirt storage API (requires libvirt 0.4.1)
+  * Suppress some bindings if the underlying libvirt doesn't support it
+  * Bindings for virDomainSetMemory, virDomainPinVcpu, and
+    virDomainSetVcpus (Vadim Zaliva)
+
+2007-12-06 0.0.2
+  * Add virNodeGetInfo binding
+
+  * Convert Ruby API from StudlyCaps to under_score_separation, since that's
+    the Ruby convention
+
+2007-11-19 0.0.1
+  * Initial release
