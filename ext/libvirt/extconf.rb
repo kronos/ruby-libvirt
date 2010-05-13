@@ -8,7 +8,7 @@ def have_libvirt_types(types)
   types.each { |t| have_type(t, "libvirt/libvirt.h") }
 end
 
-dir_config(extension_name)
+dir_config("libvirt")
 
 unless pkg_config("libvirt")
   raise "libvirt not found"
