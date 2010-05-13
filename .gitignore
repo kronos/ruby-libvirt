@@ -1,5 +1,5 @@
-.o
-.so
+*.o
+*.so
 Makefile
 pkg/
 ext/libvirt/mkmf.log
