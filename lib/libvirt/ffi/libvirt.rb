@@ -2,7 +2,7 @@ module FFI::Libvirt
   extend FFI::Library
   ffi_lib FFI::Libvirt::library_path
 
-  def library_path
+  def self.library_path
     'libvirt.so.0'
   end
 
