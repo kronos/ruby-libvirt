@@ -1,3 +1,4 @@
+require 'libvirt/ffi/libvirt'
 require 'libvirt/ffi/structs/domain_interface_stats'
 
 module FFI::Domain

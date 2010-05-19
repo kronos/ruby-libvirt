@@ -1,3 +1,4 @@
+require 'libvirt/ffi/libvirt'
 require 'libvirt/ffi/structs/storage_pool_info'
 
 module FFI::StoragePool

@@ -1,3 +1,4 @@
+require 'libvirt/ffi/libvirt'
 require 'libvirt/ffi/structs/node_info'
 
 module FFI::Connection

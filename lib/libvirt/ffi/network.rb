@@ -1,3 +1,5 @@
+require 'libvirt/ffi/libvirt'
+
 module FFI::Network
   extend FFI::Library
   ffi_lib FFI::Libvirt::library_path

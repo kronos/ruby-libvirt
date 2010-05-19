@@ -1,3 +1,4 @@
+require 'libvirt/ffi/libvirt'
 require 'libvirt/ffi/structs/stroage_vol_info'
 
 module FFI::StorageVol
