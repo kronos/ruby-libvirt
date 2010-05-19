@@ -106,7 +106,9 @@ class Connection
     string_ptr = array_names_ptr.read_pointer
     string_ptr.null? ? [] : string_ptr.get_array_of_string(0, domains_count).compact
   ensure
-    array_names_ptr.free if domains_count > 0
+    if domains_count > 0
+      array_names_ptr.get_array_of_pointer.each { |pointer| pointer.free }
+    end
   end
 
   def create_domain_linux(xml)

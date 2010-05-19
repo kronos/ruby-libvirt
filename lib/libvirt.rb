@@ -11,10 +11,8 @@
 # Ivan Samsonov   <hronya@gmail.com>
 
 require 'ffi'
-require 'libvirt/ffi/domain'
-require 'libvirt/ffi/network'
-require 'libvirt/ffi/storage_pool'
-require 'libvirt/ffi/storage_vol'
+require 'libvirt/connection'
+require 'libvirt/domain'
 
 module Libvirt
   extend FFI::Library
