@@ -1,5 +1,5 @@
-require 'ffi/connection'
-require 'domain'
+require 'libvirt/ffi/connection'
+require 'libvirt/domain'
 
 class Connection
   def initialize(url)

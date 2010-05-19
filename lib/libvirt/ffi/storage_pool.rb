@@ -1,4 +1,4 @@
-require 'structs/storage_pool_info'
+require 'libvirt/ffi/structs/storage_pool_info'
 
 module FFI::StoragePool
   extend FFI::Library

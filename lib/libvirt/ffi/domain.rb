@@ -1,4 +1,4 @@
-require 'structs/domain_interface_stats'
+require 'libvirt/ffi/structs/domain_interface_stats'
 
 module FFI::Domain
   extend FFI::Library

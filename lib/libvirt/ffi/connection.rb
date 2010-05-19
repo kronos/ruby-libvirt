@@ -1,4 +1,4 @@
-require 'structs/node_info'
+require 'libvirt/ffi/structs/node_info'
 
 module FFI::Connection
   extend FFI::Library

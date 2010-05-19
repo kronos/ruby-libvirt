@@ -1,4 +1,4 @@
-require 'structs/stroage_vol_info'
+require 'libvirt/ffi/structs/stroage_vol_info'
 
 module FFI::StorageVol
   extend FFI::Library
