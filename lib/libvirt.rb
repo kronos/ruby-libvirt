@@ -2,16 +2,26 @@
 # libvirt.rb: main module for the ruby-libvirt bindings
 #
 # Copyright (C) 2007 Red Hat, Inc.
+# Copyright (C) 2010 Oversun-Scalaxy.
 #
 # Distributed under the GNU Lesser General Public License v2.1 or later.
 # See COPYING for details
 #
 # David Lutterkort <dlutter@redhat.com>
+# Ivan Samsonov   <hronya@gmail.com>
 
-require 'libvirt'
+require 'ffi'
+require 'libvirt/ffi/domain'
+require 'libvirt/ffi/network'
+require 'libvirt/ffi/storage_pool'
+require 'libvirt/ffi/storage_vol'
 
 module Libvirt
+  extend FFI::Library
+  ffi_lib 'libvirt.so.0'
 
+  attach_function :version, [ :string ], :int
+  
   # A version in Libvirt's representation
   class Version
     attr_reader :version, :type

@@ -31,7 +31,7 @@ VALUE c_node_info;
  *
  * Open a connection to URL with virConnectOpen[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectOpen]
  */
-VALUE libvirt_open(VALUE m, VALUE url)
+static VALUE libvirt_open(VALUE m, VALUE url)
 {
   char *str = NULL;
 
@@ -57,7 +57,7 @@ VALUE libvirt_open(VALUE m, VALUE url)
  * Open a read-only connection to URL with
  * virConnectOpenReadOnly[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectOpenReadOnly]
  */
-VALUE libvirt_open_read_only(VALUE m, VALUE url)
+static VALUE libvirt_open_read_only(VALUE m, VALUE url)
 {
   char *str = NULL;
 
@@ -82,7 +82,7 @@ VALUE libvirt_open_read_only(VALUE m, VALUE url)
  *
  * Close the connection
  */
-VALUE libvirt_conn_close(VALUE s)
+static VALUE libvirt_conn_close(VALUE s)
 {
   virConnectPtr conn;
   Data_Get_Struct(s, virConnect, conn);
@@ -102,7 +102,7 @@ VALUE libvirt_conn_close(VALUE s)
  *
  * Return +true+ if the connection is closed, +false+ if it is open
  */
-VALUE libvirt_conn_closed_p(VALUE s)
+static VALUE libvirt_conn_closed_p(VALUE s)
 {
   virConnectPtr conn;
 
@@ -117,7 +117,7 @@ VALUE libvirt_conn_closed_p(VALUE s)
  *
  * Call +virConnectGetType+[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectGetType]
  */
-VALUE libvirt_conn_type(VALUE s)
+static VALUE libvirt_conn_type(VALUE s)
 {
   gen_call_string(virConnectGetType, connect_get(s), 0, connect_get(s));
 }
@@ -128,7 +128,7 @@ VALUE libvirt_conn_type(VALUE s)
  *
  * Call +virConnectGetVersion+[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectGetVersion]
  */
-VALUE libvirt_conn_version(VALUE s)
+static VALUE libvirt_conn_version(VALUE s)
 {
   int r;
   unsigned long v;
@@ -146,14 +146,15 @@ VALUE libvirt_conn_version(VALUE s)
  *
  * Call +virConnectGetHostname+[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectGetHostname]
  */
-VALUE libvirt_conn_hostname(VALUE s) {
+static VALUE libvirt_conn_hostname(VALUE s)
+{
   gen_call_string(virConnectGetHostname, connect_get(s), 1, connect_get(s));
 }
 
 /*
  * Call +virConnectGetURI+[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectGetURI]
  */
-VALUE libvirt_conn_uri(VALUE s)
+static VALUE libvirt_conn_uri(VALUE s)
 {
   virConnectPtr conn = connect_get(s);
   gen_call_string(virConnectGetURI, conn, 1,
@@ -163,7 +164,7 @@ VALUE libvirt_conn_uri(VALUE s)
 /*
  * Call +virConnectGetMaxVcpus+[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectGetMaxVcpus]
  */
-VALUE libvirt_conn_max_vcpus(VALUE s, VALUE type)
+static VALUE libvirt_conn_max_vcpus(VALUE s, VALUE type)
 {
   int result;
   virConnectPtr conn = connect_get(s);
@@ -177,7 +178,7 @@ VALUE libvirt_conn_max_vcpus(VALUE s, VALUE type)
 /*
  * Call +virNodeInfo+[http://www.libvirt.org/html/libvirt-libvirt.html#virNodeGetInfo]
  */
-VALUE libvirt_conn_node_get_info(VALUE s)
+static VALUE libvirt_conn_node_get_info(VALUE s)
 {
   int r;
   virConnectPtr conn = connect_get(s);
@@ -206,7 +207,7 @@ VALUE libvirt_conn_node_get_info(VALUE s)
 /*
  * Call +virConnectGetCapabilities+[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectGetCapabilities]
  */
-VALUE libvirt_conn_capabilities(VALUE s)
+static VALUE libvirt_conn_capabilities(VALUE s)
 {
   virConnectPtr conn = connect_get(s);
   gen_call_string(virConnectGetCapabilities, conn, 1, conn);
@@ -215,7 +216,7 @@ VALUE libvirt_conn_capabilities(VALUE s)
 /*
  * Call +virConnectNumOfDomains+[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectNumOfDomains]
  */
-VALUE libvirt_conn_num_of_domains(VALUE s)
+static VALUE libvirt_conn_num_of_domains(VALUE s)
 {
   gen_conn_num_of(s, Domains);
 }
@@ -223,7 +224,7 @@ VALUE libvirt_conn_num_of_domains(VALUE s)
 /*
  * Call +virConnectListDomains+[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectListDomains]
  */
-VALUE libvirt_conn_list_domains(VALUE s)
+static VALUE libvirt_conn_list_domains(VALUE s)
 {
   int i, r, num, *ids;
   virConnectPtr conn = connect_get(s);
@@ -260,7 +261,7 @@ VALUE libvirt_conn_list_domains(VALUE s)
 /*
  * Call +virConnectNumOfDefinedDomains+[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectNumOfDefinedDomains]
  */
-VALUE libvirt_conn_num_of_defined_domains(VALUE s)
+static VALUE libvirt_conn_num_of_defined_domains(VALUE s)
 {
   gen_conn_num_of(s, DefinedDomains);
 }
@@ -268,7 +269,7 @@ VALUE libvirt_conn_num_of_defined_domains(VALUE s)
 /*
  * Call +virConnectListDefinedDomains+[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectListDefinedDomains]
  */
-VALUE libvirt_conn_list_defined_domains(VALUE s)
+static VALUE libvirt_conn_list_defined_domains(VALUE s)
 {
   gen_conn_list_names(s, DefinedDomains);
 }
@@ -276,7 +277,7 @@ VALUE libvirt_conn_list_defined_domains(VALUE s)
 /*
  * Call +virDomainCreateLinux+[http://www.libvirt.org/html/libvirt-libvirt.html#virDomainCreateLinux]
  */
-VALUE libvirt_conn_create_linux(int argc, VALUE *argv, VALUE c)
+static VALUE libvirt_conn_create_linux(int argc, VALUE *argv, VALUE c)
 {
   virDomainPtr dom;
   virConnectPtr conn = connect_get(c);
@@ -299,7 +300,7 @@ VALUE libvirt_conn_create_linux(int argc, VALUE *argv, VALUE c)
 /*
  * Call +virDomainLookupByName+[http://www.libvirt.org/html/libvirt-libvirt.html#virDomainLookupByName]
  */
-VALUE libvirt_conn_lookup_domain_by_name(VALUE c, VALUE name)
+static VALUE libvirt_conn_lookup_domain_by_name(VALUE c, VALUE name)
 {
   virDomainPtr dom;
   virConnectPtr conn = connect_get(c);
@@ -313,7 +314,7 @@ VALUE libvirt_conn_lookup_domain_by_name(VALUE c, VALUE name)
 /*
  * Call +virDomainLookupByID+[http://www.libvirt.org/html/libvirt-libvirt.html#virDomainLookupByID]
  */
-VALUE libvirt_conn_lookup_domain_by_id(VALUE c, VALUE id)
+static VALUE libvirt_conn_lookup_domain_by_id(VALUE c, VALUE id)
 {
   virDomainPtr dom;
   virConnectPtr conn = connect_get(c);
@@ -327,7 +328,7 @@ VALUE libvirt_conn_lookup_domain_by_id(VALUE c, VALUE id)
 /*
  * Call +virDomainLookupByUUIDString+[http://www.libvirt.org/html/libvirt-libvirt.html#virDomainLookupByUUIDString]
  */
-VALUE libvirt_conn_lookup_domain_by_uuid(VALUE c, VALUE uuid)
+static VALUE libvirt_conn_lookup_domain_by_uuid(VALUE c, VALUE uuid)
 {
   virDomainPtr dom;
   virConnectPtr conn = connect_get(c);
@@ -341,7 +342,7 @@ VALUE libvirt_conn_lookup_domain_by_uuid(VALUE c, VALUE uuid)
 /*
  * Call +virDomainDefineXML+[http://www.libvirt.org/html/libvirt-libvirt.html#virDomainDefineXML]
  */
-VALUE libvirt_conn_define_domain_xml(VALUE c, VALUE xml)
+static VALUE libvirt_conn_define_domain_xml(VALUE c, VALUE xml)
 {
   virDomainPtr dom;
   virConnectPtr conn = connect_get(c);

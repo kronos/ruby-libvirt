@@ -29,7 +29,7 @@ VALUE c_network;
 /*
  * Call +virNetworkUndefine+[http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkUndefine]
  */
-VALUE libvirt_netw_undefine(VALUE s)
+static VALUE libvirt_netw_undefine(VALUE s)
 {
   gen_call_void(virNetworkUndefine, conn(s), network_get(s));
 }
@@ -37,7 +37,7 @@ VALUE libvirt_netw_undefine(VALUE s)
 /*
  * Call +virNetworkCreate+[http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkCreate]
  */
-VALUE libvirt_netw_create(VALUE s)
+static VALUE libvirt_netw_create(VALUE s)
 {
   gen_call_void(virNetworkCreate, conn(s), network_get(s));
 }
@@ -45,7 +45,7 @@ VALUE libvirt_netw_create(VALUE s)
 /*
  * Call +virNetworkDestroy+[http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkDestroy]
  */
-VALUE libvirt_netw_destroy(VALUE s)
+static VALUE libvirt_netw_destroy(VALUE s)
 {
   gen_call_void(virNetworkDestroy, conn(s), network_get(s));
 }
@@ -53,7 +53,7 @@ VALUE libvirt_netw_destroy(VALUE s)
 /*
  * Call +virNetworkGetName+[http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkGetName]
  */
-VALUE libvirt_netw_name(VALUE s)
+static VALUE libvirt_netw_name(VALUE s)
 {
   gen_call_string(virNetworkGetName, conn(s), 0, network_get(s));
 }
@@ -61,7 +61,7 @@ VALUE libvirt_netw_name(VALUE s)
 /*
  * Call +virNetworkGetUUIDString+[http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkGetUUIDString]
  */
-VALUE libvirt_netw_uuid(VALUE s)
+static VALUE libvirt_netw_uuid(VALUE s)
 {
   virNetworkPtr netw = network_get(s);
   char uuid[VIR_UUID_STRING_BUFLEN];
@@ -76,7 +76,7 @@ VALUE libvirt_netw_uuid(VALUE s)
 /*
  * Call +virNetworkGetXMLDesc+[http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkGetXMLDesc]
  */
-VALUE libvirt_netw_xml_desc(int argc, VALUE *argv, VALUE s)
+static VALUE libvirt_netw_xml_desc(int argc, VALUE *argv, VALUE s)
 {
   VALUE flags;
 
@@ -91,7 +91,7 @@ VALUE libvirt_netw_xml_desc(int argc, VALUE *argv, VALUE s)
 /*
  * Call +virNetworkGetBridgeName+[http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkGetBridgeName]
  */
-VALUE libvirt_netw_bridge_name(VALUE s)
+static VALUE libvirt_netw_bridge_name(VALUE s)
 {
   gen_call_string(virNetworkGetBridgeName, conn(s), 1, network_get(s));
 }
@@ -99,7 +99,7 @@ VALUE libvirt_netw_bridge_name(VALUE s)
 /*
  * Call +virNetworkGetAutostart+[http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkGetAutostart]
  */
-VALUE libvirt_netw_autostart(VALUE s)
+static VALUE libvirt_netw_autostart(VALUE s)
 {
   virNetworkPtr netw = network_get(s);
   int r, autostart;
@@ -113,7 +113,7 @@ VALUE libvirt_netw_autostart(VALUE s)
 /*
  * Call +virNetworkSetAutostart+[http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkSetAutostart]
  */
-VALUE libvirt_netw_autostart_set(VALUE s, VALUE autostart)
+static VALUE libvirt_netw_autostart_set(VALUE s, VALUE autostart)
 {
   gen_call_void(virNetworkSetAutostart, conn(s), network_get(s), RTEST(autostart) ? 1 : 0);
 }
@@ -121,7 +121,7 @@ VALUE libvirt_netw_autostart_set(VALUE s, VALUE autostart)
 /*
  * Call +virNetworkFree+[http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkFree]
  */
-VALUE libvirt_netw_free(VALUE s)
+static VALUE libvirt_netw_free(VALUE s)
 {
   gen_call_free(Network, s);
 }
@@ -129,7 +129,7 @@ VALUE libvirt_netw_free(VALUE s)
 /*
  * Call +virConnectNumOfNetworks+[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectNumOfNetworks]
  */
-VALUE libvirt_conn_num_of_networks(VALUE s)
+static VALUE libvirt_conn_num_of_networks(VALUE s)
 {
   gen_conn_num_of(s, Networks);
 }
@@ -137,7 +137,7 @@ VALUE libvirt_conn_num_of_networks(VALUE s)
 /*
  * Call +virConnectListNetworks+[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectListNetworks]
  */
-VALUE libvirt_conn_list_networks(VALUE s)
+static VALUE libvirt_conn_list_networks(VALUE s)
 {
   gen_conn_list_names(s, Networks);
 }
@@ -145,7 +145,7 @@ VALUE libvirt_conn_list_networks(VALUE s)
 /*
  * Call +virConnectNumOfDefinedNetworks+[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectNumOfDefinedNetworks]
  */
-VALUE libvirt_conn_num_of_defined_networks(VALUE s)
+static VALUE libvirt_conn_num_of_defined_networks(VALUE s)
 {
   gen_conn_num_of(s, DefinedNetworks);
 }
@@ -153,7 +153,7 @@ VALUE libvirt_conn_num_of_defined_networks(VALUE s)
 /*
  * Call +virConnectListDefinedNetworks+[http://www.libvirt.org/html/libvirt-libvirt.html#virConnectListDefinedNetworks]
  */
-VALUE libvirt_conn_list_defined_networks(VALUE s)
+static VALUE libvirt_conn_list_defined_networks(VALUE s)
 {
   gen_conn_list_names(s, DefinedNetworks);
 }
@@ -161,7 +161,7 @@ VALUE libvirt_conn_list_defined_networks(VALUE s)
 /*
  * Call +virNetworkLookupByName+[http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkLookupByName]
  */
-VALUE libvirt_conn_lookup_network_by_name(VALUE c, VALUE name)
+static VALUE libvirt_conn_lookup_network_by_name(VALUE c, VALUE name)
 {
   virNetworkPtr netw;
   virConnectPtr conn = connect_get(c);
@@ -175,7 +175,7 @@ VALUE libvirt_conn_lookup_network_by_name(VALUE c, VALUE name)
 /*
  * Call +virNetworkLookupByUUIDString+[http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkLookupByUUIDString]
  */
-VALUE libvirt_conn_lookup_network_by_uuid(VALUE c, VALUE uuid)
+static VALUE libvirt_conn_lookup_network_by_uuid(VALUE c, VALUE uuid)
 {
   virNetworkPtr netw;
   virConnectPtr conn = connect_get(c);
@@ -189,7 +189,7 @@ VALUE libvirt_conn_lookup_network_by_uuid(VALUE c, VALUE uuid)
 /*
  * Call +virNetworkCreateXML+[http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkCreateXML]
  */
-VALUE libvirt_conn_create_network_xml(VALUE c, VALUE xml)
+static VALUE libvirt_conn_create_network_xml(VALUE c, VALUE xml)
 {
   virNetworkPtr netw;
   virConnectPtr conn = connect_get(c);
@@ -206,7 +206,7 @@ VALUE libvirt_conn_create_network_xml(VALUE c, VALUE xml)
 /*
  * Call +virNetworkDefineXML+[http://www.libvirt.org/html/libvirt-libvirt.html#virNetworkDefineXML]
  */
-VALUE libvirt_conn_define_network_xml(VALUE c, VALUE xml)
+static VALUE libvirt_conn_define_network_xml(VALUE c, VALUE xml)
 {
   virNetworkPtr netw;
   virConnectPtr conn = connect_get(c);
