@@ -30,8 +30,6 @@ class Connection
     raise(RetrieveError, "Could'n revtrieve connection version") if result < 0
 
     version = version_ptr.read_long
-  ensure
-    version_ptr.free
   end
 
   def hostname
@@ -57,8 +55,6 @@ class Connection
     result = FFI::Connection.virNodeGetInfo(@connection, node_info_ptr)
     raise(RetrieveError, "Couldn't revtrieve connection node info") if result < 0
     NodeInfo.new(node_info_ptr)
-  ensure
-    node_info_ptr.free
   end
 
   def capabilities
@@ -84,8 +80,6 @@ class Connection
 
     string_ptr = array_names_ptr.read_pointer
     string_ptr.null? ? [] : string_ptr.get_array_of_string(0, domains_count).compact
-  ensure
-    array_names_ptr.free if domains_count > 0
   end
 
   def num_of_defined_domains
@@ -105,10 +99,6 @@ class Connection
 
     string_ptr = array_names_ptr.read_pointer
     string_ptr.null? ? [] : string_ptr.get_array_of_string(0, domains_count).compact
-  ensure
-    if domains_count > 0
-      array_names_ptr.get_array_of_pointer.each { |pointer| pointer.free }
-    end
   end
 
   def create_domain_linux(xml)

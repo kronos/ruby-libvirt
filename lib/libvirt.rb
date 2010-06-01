@@ -16,16 +16,13 @@ require 'libvirt/domain'
 
 module Libvirt
   def version(type="Xen")
-    library_version = MemoryPointer.new
-    type_version = MemoryPointer.new
+    library_version = FFI::MemoryPointer.new(:pointer)
+    type_version = FFI::MemoryPointer.new(:pointer)
 
     result = FFI::Libvirt.virGetVersion(library_version, type, type_version)
     raise ArgumentError, "Failed get version for #{type} connection" if result < 0
 
     [library_version.read_ulong, type_version.read_ulong]
-  ensure
-    library_version.free
-    type_version.free
   end
   module_function :version
   #
