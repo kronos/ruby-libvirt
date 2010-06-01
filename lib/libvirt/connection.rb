@@ -19,34 +19,34 @@ class Connection
 
   def type
     type = FFI::Connection.virConnectGetType(@connection)
-    raise(RetrieveError, "Could'n revtrieve connection type") unless type
+    raise(RetrieveError, "Couldn't revtrieve connection type") unless type
     type
   end
 
   def version
     version_ptr = FFI::MemoryPointer.new(:ulong)
-    result = FFI::Connection.virConnectGetVersion(@connection, connection_version)
+    result = FFI::Connection.virConnectGetVersion(@connection, version_ptr)
 
-    raise(RetrieveError, "Could'n revtrieve connection version") if result < 0
+    raise(RetrieveError, "Couldn't revtrieve connection version") if result < 0
 
     version_ptr.get_ulong(0)
   end
 
   def hostname
     hostname = FFI::Connection.virConnectGetHostname(@connection)
-    raise(RetrieveError, "Could'n revtrieve connection hostname") unless hostname
+    raise(RetrieveError, "Couldn't revtrieve connection hostname") unless hostname
     type
   end
 
   def uri
     uri = FFI::Connection.virConnectGetURI(@connection)
-    raise(RetrieveError, "Could'n revtrieve connection hostname") unless uri
+    raise(RetrieveError, "Couldn't revtrieve connection hostname") unless uri
     uri
   end
 
   def max_vcpus(hypervisor_type = 'xen')
     vcpus = FFI::Connection.virConnectGetURI(@connection, hypervisor_type)
-    raise(RetrieveError, "Could'n revtrieve connection hostname") unless vcpus
+    raise(RetrieveError, "Couldn't revtrieve connection hostname") unless vcpus
     vcpus
   end
 
