@@ -15,6 +15,7 @@ require 'libvirt/connection'
 require 'libvirt/domain'
 
 module Libvirt
+  # major * 1_000_000 + minor * 1_000 + release
   def version(type="Xen")
     library_version = FFI::MemoryPointer.new(:pointer)
     type_version = FFI::MemoryPointer.new(:pointer)
@@ -25,30 +26,4 @@ module Libvirt
     [library_version.get_ulong(0), type_version.get_ulong(0)]
   end
   module_function :version
-  #
-  # # A version in Libvirt's representation
-  # class Version
-  #   attr_reader :version, :type
-  #
-  #   def initialize(type, version)
-  #     @type = type
-  #     @version = version
-  #   end
-  #
-  #   def major
-  #     version / 1000000
-  #   end
-  #
-  #   def minor
-  #     version % 1000000 / 1000
-  #   end
-  #
-  #   def release
-  #     version % 1000
-  #   end
-  #
-  #   def to_s
-  #     "#{major}.#{minor}.#{release}"
-  #   end
-  # end
 end

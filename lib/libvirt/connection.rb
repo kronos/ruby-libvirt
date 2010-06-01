@@ -8,7 +8,7 @@ class Connection
   end
 
   def open
-    @connection = FFI::Connection.virConnectOpen(url).read_pointer
+    @connection = FFI::Connection.virConnectOpen(@url).read_pointer
     raise(Libvirt::ConnectionError, "Failed to open #{url}") unless @connection
     true
   end
