@@ -29,7 +29,7 @@ class Connection
 
     raise(RetrieveError, "Could'n revtrieve connection version") if result < 0
 
-    version = version_ptr.read_long
+    version = version_ptr.get_ulong(0)
   end
 
   def hostname

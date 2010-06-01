@@ -22,7 +22,7 @@ module Libvirt
     result = FFI::Libvirt.virGetVersion(library_version, type, type_version)
     raise ArgumentError, "Failed get version for #{type} connection" if result < 0
 
-    [library_version.read_ulong, type_version.read_ulong]
+    [library_version.get_ulong(0), type_version.get_ulong(0)]
   end
   module_function :version
   #
