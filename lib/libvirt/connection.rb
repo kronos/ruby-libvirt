@@ -19,7 +19,7 @@ class Connection
 
   def type
     type = FFI::Connection.virConnectGetType(@connection)
-    raise(RetrieveError, "Couldn't revtrieve connection type") if type.null?
+    raise(RetrieveError, "Couldn't revtrieve connection type") unless type.kind_of? String
     type
   end
 
@@ -34,19 +34,19 @@ class Connection
 
   def hostname
     hostname = FFI::Connection.virConnectGetHostname(@connection)
-    raise(RetrieveError, "Couldn't revtrieve connection hostname") if hostname.null?
+    raise(RetrieveError, "Couldn't revtrieve connection hostname") unless hostname.kind_of? String
     hostname
   end
 
   def uri
     uri = FFI::Connection.virConnectGetURI(@connection)
-    raise(RetrieveError, "Couldn't revtrieve connection hostname") if uri.null?
+    raise(RetrieveError, "Couldn't revtrieve connection hostname") unless uri.kind_of? String
     uri
   end
 
   def max_vcpus(hypervisor_type = 'xen')
-    vcpus = FFI::Connection.virConnectGetURI(@connection, hypervisor_type)
-    raise(RetrieveError, "Couldn't revtrieve connection hostname") if vcpus.null?
+    vcpus = FFI::Connection.virConnectGetMaxVcpus(@connection, hypervisor_type)
+    raise(RetrieveError, "Couldn't revtrieve max vcpus value") unless vcpus.kind_of? Numeric
     vcpus
   end
 
@@ -59,7 +59,7 @@ class Connection
 
   def capabilities
     connection_capabilities = FFI::Connection.virConnectGetCapabilities(@connection)
-    raise(RetrieveError, "Couldn't revtrieve connection node info") if connection_capabilities.null?
+    raise(RetrieveError, "Couldn't revtrieve connection node info") unless connection_capabilities.kind_of? String
     connection_capabilities
   end
 
