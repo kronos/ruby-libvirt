@@ -4,17 +4,17 @@ require 'libvirt/domain'
 class Connection
   def initialize(url)
     @url = url
-    @connection = nil
+    @connection = FFI::Pointer.new(0)
   end
 
   def open
-    @connection = FFI::Connection.virConnectOpen(@url).read_pointer
-    raise(Libvirt::ConnectionError, "Failed to open #{url}") unless @connection
+    @connection = FFI::Connection.virConnectOpen(@url)
+    raise(Libvirt::ConnectionError, "Failed to open #{@url}") if @connection.null?
     true
   end
 
   def closed?
-    @connection.nil?
+    @connection.null?
   end
 
   def type
@@ -134,10 +134,5 @@ class Connection
   def close
     result = Connect.virConnectClose(@connection)
     raise(Libvirt::SystemCallError, "Connection close failed") if result < 0
-  end
-
-  def release
-    @connection.free if @connection
-    @connection = nil
   end
 end
