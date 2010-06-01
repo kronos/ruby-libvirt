@@ -15,34 +15,43 @@ require 'libvirt/connection'
 require 'libvirt/domain'
 
 module Libvirt
-  extend FFI::Library
-  ffi_lib 'libvirt.so.0'
+  def version(type="Xen")
+    library_version = MemoryPointer.new
+    type_version = MemoryPointer.new
 
-  attach_function :version, [ :string ], :int
-  
-  # A version in Libvirt's representation
-  class Version
-    attr_reader :version, :type
+    result = FFI::Libvirt.virGetVersion(library_version, type, type_version)
+    raise ArgumentError, "Failed get version for #{type} connection" if result < 0
 
-    def initialize(type, version)
-      @type = type
-      @version = version
-    end
-
-    def major
-      version / 1000000
-    end
-
-    def minor
-      version % 1000000 / 1000
-    end
-
-    def release
-      version % 1000
-    end
-
-    def to_s
-      "#{major}.#{minor}.#{release}"
-    end
+    [library_version.read_ulong, type_version.read_ulong]
+  ensure
+    library_version.free
+    type_version.free
   end
+  module_function :version
+  #
+  # # A version in Libvirt's representation
+  # class Version
+  #   attr_reader :version, :type
+  #
+  #   def initialize(type, version)
+  #     @type = type
+  #     @version = version
+  #   end
+  #
+  #   def major
+  #     version / 1000000
+  #   end
+  #
+  #   def minor
+  #     version % 1000000 / 1000
+  #   end
+  #
+  #   def release
+  #     version % 1000
+  #   end
+  #
+  #   def to_s
+  #     "#{major}.#{minor}.#{release}"
+  #   end
+  # end
 end
