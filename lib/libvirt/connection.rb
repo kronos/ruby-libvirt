@@ -132,7 +132,7 @@ class Connection
   end
 
   def close
-    result = Connect.virConnectClose(@connection)
+    result = FFI::Connection.virConnectClose(@connection)
     raise(Libvirt::SystemCallError, "Connection close failed") if result < 0
   end
 end
