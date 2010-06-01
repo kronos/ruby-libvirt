@@ -24,7 +24,7 @@ class Connection
   end
 
   def version
-    version_ptr = MemoryPointer.new(:ulong)
+    version_ptr = FFI::MemoryPointer.new(:ulong)
     result = FFI::Connection.virConnectGetVersion(@connection, connection_version)
 
     raise(RetrieveError, "Could'n revtrieve connection version") if result < 0
