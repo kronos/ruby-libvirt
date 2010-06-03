@@ -4,7 +4,7 @@
 #   unsigned long long  allocation   : Current allocation bytes
 # }
 
-class StorageVollInfo < FFI::Struct
+class FFI::Libvirt::StorageVolInfo < FFI::Struct
   layout :type,       :int,
          :capacity,   :ulong_long,
          :allocation, :ulong_long

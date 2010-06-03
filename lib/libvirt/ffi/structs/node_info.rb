@@ -9,7 +9,7 @@
 #   unsigned int  threads  : number of threads per core
 # }
 
-class NodeInfo < FFI::Struct
+class FFI::Libvirt::NodeInfo < FFI::Struct
   layout :model,   [:char, 32],
          :memory,  :ulong,
          :cpus,    :uint,

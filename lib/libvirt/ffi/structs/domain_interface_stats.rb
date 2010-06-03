@@ -9,7 +9,7 @@
 #   long long tx_drop
 # }
 
-class DomainInterfaceStats < FFI::Struct
+class FFI::Libvirt::DomainInterfaceStats < FFI::Struct
   layout :rx_bytes,   :long_long,
          :rx_packets, :long_long,
          :rx_errs,    :long_long,

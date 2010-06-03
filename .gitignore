@@ -1,5 +1,6 @@
 *.o
 *.so
+*.gem
 Makefile
 pkg/
 ext/libvirt/mkmf.log

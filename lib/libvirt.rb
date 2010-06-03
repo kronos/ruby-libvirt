@@ -16,7 +16,7 @@ require 'libvirt/domain'
 
 module Libvirt
   # major * 1_000_000 + minor * 1_000 + release
-  def version(type="Xen")
+  def version(type = "Xen")
     library_version = FFI::MemoryPointer.new(:pointer)
     type_version = FFI::MemoryPointer.new(:pointer)
 
@@ -26,4 +26,16 @@ module Libvirt
     [library_version.get_ulong(0), type_version.get_ulong(0)]
   end
   module_function :version
+
+  class Error < StandardError
+  end
+
+  class ConnectionError < Error
+  end
+
+  class DefinitionError < Error
+  end
+
+  class RetrieveErroror < Error
+  end
 end

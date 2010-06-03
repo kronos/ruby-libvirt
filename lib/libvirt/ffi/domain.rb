@@ -1,7 +1,6 @@
 require 'libvirt/ffi/libvirt'
-require 'libvirt/ffi/structs/domain_interface_stats'
 
-module FFI::Domain
+module FFI::Libvirt::Domain
   extend FFI::Library
   ffi_lib FFI::Libvirt::library_path
 
@@ -61,6 +60,8 @@ module FFI::Domain
   attach_function :virDomainAttachDevice,      [:pointer, :string], :int
   # int	virDomainDetachDevice(virDomainPtr domain, const char * xml)
   attach_function :virDomainDetachDevice,      [:pointer, :string], :int
+  # virDomainPtr	virDomainMigrate	(virDomainPtr domain, virConnectPtr dconn, unsigned long flags, const char * dname, const char * uri, unsigned long bandwidth)
+  attach_function :virDomainMigrate,      [:pointer, :pointer, :ulong, :string, :string, :ulong], :pointer
 
   # enum virDomainState {
   #   VIR_DOMAIN_NOSTATE   =  0  : no state
@@ -78,4 +79,42 @@ module FFI::Domain
                          :VIR_DOMAIN_SHUTDOWN,
                          :VIR_DOMAIN_SHUTOFF,
                          :VIR_DOMAIN_CRASHED]
+
+  # enum virDomainMigrateFlags {
+  #   VIR_MIGRATE_LIVE  =  1  : live migration
+  #   VIR_MIGRATE_PEER2PEER   =  2  : direct source -> dest host control channel Note the less-common spelling that we're stuck with: VIR_MIGRATE_TUNNELLED should be VIR_MIGRATE_TUNNELED
+  #   VIR_MIGRATE_TUNNELLED   =  4  : tunnel migration data over libvirtd connection
+  #   VIR_MIGRATE_PERSIST_DEST  =  8  : persist the VM on the destination
+  #   VIR_MIGRATE_UNDEFINE_SOURCE   =  16   : undefine the VM on the source
+  #   VIR_MIGRATE_PAUSED  =  32   : pause on remote side
+  #   VIR_MIGRATE_NON_SHARED_DISK   =  64   : migration with non-shared storage with full disk copy
+  #   VIR_MIGRATE_NON_SHARED_INC  =  128  : migration with non-shared storage with incremental copy (same base image shared between source and destination)
+  # }
+  enum :virDomainState, [:VIR_MIGRATE_LIVE,             1,
+                         :VIR_MIGRATE_PEER2PEER,        2,
+                         :VIR_MIGRATE_TUNNELLED,        4,
+                         :VIR_MIGRATE_PERSIST_DEST,     8,
+                         :VIR_MIGRATE_UNDEFINE_SOURCE, 16,
+                         :VIR_MIGRATE_PAUSED,          32,
+                         :VIR_MIGRATE_NON_SHARED_DISK, 64,
+                         :VIR_MIGRATE_NON_SHARED_INC, 128]
+
+  # enum virDomainXMLFlags {
+  #   VIR_DOMAIN_XML_SECURE  =  1  : dump security sensitive information too
+  #   VIR_DOMAIN_XML_INACTIVE  =  2  : dump inactive domain information
+  #   VIR_DOMAIN_XML_UPDATE_CPU  =  4  : update guest CPU requirements according to host CPU
+  # }
+  enum :virDomainXMLFlags, [:VIR_DOMAIN_XML_SECURE,     1,
+                            :VIR_DOMAIN_XML_INACTIVE,   2,
+                            :VIR_DOMAIN_XML_UPDATE_CPU, 4]
+
+  # TODO: find right place to put the enum in
+  # enum virDomainDeviceModifyFlags {
+  #   VIR_DOMAIN_DEVICE_MODIFY_CURRENT   =  0  : Modify device allocation based on current domain state
+  #   VIR_DOMAIN_DEVICE_MODIFY_LIVE  =  1  : Modify live device allocation
+  #   VIR_DOMAIN_DEVICE_MODIFY_CONFIG  =  2  : Modify persisted device allocation
+  # }
+  enum :virDomainDeviceModifyFlags, [:VIR_DOMAIN_DEVICE_MODIFY_CURRENT, 0,
+                                     :VIR_DOMAIN_DEVICE_MODIFY_LIVE,
+                                     :VIR_DOMAIN_DEVICE_MODIFY_CONFIG]
 end

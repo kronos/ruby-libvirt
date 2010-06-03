@@ -1,7 +1,7 @@
 require 'libvirt/ffi/libvirt'
 require 'libvirt/ffi/structs/node_info'
 
-module FFI::Connection
+module FFI::Libvirt::Connection
   extend FFI::Library
   ffi_lib FFI::Libvirt::library_path
 

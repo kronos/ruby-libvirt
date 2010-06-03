@@ -1,6 +1,6 @@
 require 'libvirt/ffi/libvirt'
 
-module FFI::Network
+module FFI::Libvirt::Network
   extend FFI::Library
   ffi_lib FFI::Libvirt::library_path
 

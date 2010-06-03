@@ -1,7 +1,7 @@
 require 'libvirt/ffi/libvirt'
 require 'libvirt/ffi/structs/stroage_vol_info'
 
-module FFI::StorageVol
+module FFI::Libvirt::StorageVol
   extend FFI::Library
   ffi_lib FFI::Libvirt::library_path
 
