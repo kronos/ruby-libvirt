@@ -1,67 +1,87 @@
-require 'libvirt/ffi/libvirt'
-
 module FFI::Libvirt::Domain
   extend FFI::Library
   ffi_lib FFI::Libvirt::library_path
 
-  # int	virDomainDestroy		(virDomainPtr domain)
-  attach_function :virDomainDestroy,           [:pointer], :int
-  # int	virDomainShutdown(virDomainPtr domain)
-  attach_function :virDomainShutdown,          [:pointer], :int
-  # int	virDomainReboot(virDomainPtr domain, unsigned int flags)
-  attach_function :virDomainReboot,            [:pointer, :uint], :int
-  # int	virDomainSuspend(virDomainPtr domain)
-  attach_function :virDomainSuspend,           [:pointer], :int
-  # int	virDomainResume(virDomainPtr domain)
-  attach_function :virDomainResume,            [:pointer], :int
-  # int	virDomainManagedSaveRemove(virDomainPtr dom, unsigned int flags)
-  attach_function :virDomainManagedSaveRemove, [:pointer, :uint], :int
-  # int	virDomainCoreDump(virDomainPtr domain, const char * to, int flags)
-  attach_function :virDomainCoreDump,          [:pointer, :string, :int], :int
-  # int	virDomainRestore(virConnectPtr conn, const char * from)
-  attach_function :virDomainRestore,           [:pointer, :string], :int
-  # int	virDomainGetInfo(virDomainPtr domain, virDomainInfoPtr info)
-  attach_function :virDomainGetInfo,           [:pointer, :pointer], :int
-  # int	virDomainInterfaceStats(virDomainPtr dom, const char * path, virDomainInterfaceStatsPtr stats, size_t size)
-  attach_function :virDomainInterfaceStats,    [:pointer, :string, :pointer, :size_t], :int
-  # const char *	virDomainGetName(virDomainPtr domain)
-  attach_function :virDomainGetName,           [:pointer], :string
-  # unsigned int	virDomainGetID(virDomainPtr domain)
-  attach_function :virDomainGetID,             [:pointer], :uint
-  # int	virDomainGetUUIDString(virDomainPtr domain, char * buf)
-  attach_function :virDomainGetUUIDString,     [:pointer, :string], :int
-  # char *	virDomainGetOSType(virDomainPtr domain)
-  attach_function :virDomainGetOSType,         [:pointer], :string
-  # unsigned long	virDomainGetMaxMemory(virDomainPtr domain)
-  attach_function :virDomainGetMaxMemory,      [:pointer], :ulong
-  # int	virDomainSetMaxMemory(virDomainPtr domain, unsigned long memory)
-  attach_function :virDomainSetMaxMemory,      [:pointer, :ulong], :int
-  # int	virDomainSetMemory(virDomainPtr domain, unsigned long memory)
-  attach_function :virDomainSetMemory,         [:pointer, :ulong], :int
-  # int	virDomainGetMaxVcpus(virDomainPtr domain)
-  attach_function :virDomainGetMaxVcpus,       [:pointer], :int
-  # int	virDomainSetVcpus(virDomainPtr domain, unsigned int nvcpus)
-  attach_function :virDomainSetVcpus,          [:pointer, :uint], :int
-  # int	virDomainPinVcpu(virDomainPtr domain, unsigned int vcpu, unsigned char * cpumap, int maplen)
-  attach_function :virDomainPinVcpu,           [:pointer, :uint, :pointer, :int], :int
-  # char *	virDomainGetXMLDesc(virDomainPtr domain, int flags)
-  attach_function :virDomainGetXMLDesc,        [:pointer, :int], :string
-  # int	virDomainUndefine(virDomainPtr domain)
-  attach_function :virDomainUndefine,          [:pointer], :int
-  # int	virDomainCreate(virDomainPtr domain)
-  attach_function :virDomainCreate,            [:pointer], :int
-  # int	virDomainGetAutostart(virDomainPtr domain, int * autostart)
-  attach_function :virDomainGetAutostart,      [:pointer, :pointer], :int
-  # int	virDomainSetAutostart(virDomainPtr domain, int autostart)
-  attach_function :virDomainSetAutostart,      [:pointer, :int], :int
-  # int	virDomainFree(virDomainPtr domain)
-  attach_function :virDomainFree,              [:pointer], :int
-  # int	virDomainAttachDevice(virDomainPtr domain, const char * xml)
-  attach_function :virDomainAttachDevice,      [:pointer, :string], :int
-  # int	virDomainDetachDevice(virDomainPtr domain, const char * xml)
-  attach_function :virDomainDetachDevice,      [:pointer, :string], :int
-  # virDomainPtr	virDomainMigrate	(virDomainPtr domain, virConnectPtr dconn, unsigned long flags, const char * dname, const char * uri, unsigned long bandwidth)
-  attach_function :virDomainMigrate,      [:pointer, :pointer, :ulong, :string, :string, :ulong], :pointer
+  if Libvirt::readable_version >= '0.0.3'
+    # int	virDomainDestroy		(virDomainPtr domain)
+    attach_function :virDomainDestroy,           [:pointer], :int
+    # int	virDomainFree(virDomainPtr domain)
+    attach_function :virDomainFree,              [:pointer], :int
+    # unsigned int	virDomainGetID(virDomainPtr domain)
+    attach_function :virDomainGetID,             [:pointer], :uint
+    # int	virDomainGetInfo(virDomainPtr domain, virDomainInfoPtr info)
+    attach_function :virDomainGetInfo,           [:pointer, :pointer], :int
+    # unsigned long	virDomainGetMaxMemory(virDomainPtr domain)
+    attach_function :virDomainGetMaxMemory,      [:pointer], :ulong
+    # char *	virDomainGetOSType(virDomainPtr domain)
+    attach_function :virDomainGetOSType,         [:pointer], :string
+    # char *	virDomainGetXMLDesc(virDomainPtr domain, int flags)
+    attach_function :virDomainGetXMLDesc,        [:pointer, :int], :string
+    # int	virDomainResume(virDomainPtr domain)
+    attach_function :virDomainResume,            [:pointer], :int
+    # int	virDomainSave(virDomainPtr domain, const char * to)
+    attach_function :virDomainSave               [:pointer, :string], :int
+    # int	virDomainSetMaxMemory(virDomainPtr domain, unsigned long memory)
+    attach_function :virDomainSetMaxMemory,      [:pointer, :ulong], :int
+    # int	virDomainShutdown(virDomainPtr domain)
+    attach_function :virDomainShutdown,          [:pointer], :int
+    # const char *	virDomainGetName(virDomainPtr domain)
+    attach_function :vvirDomainShutdownirDomainGetName,           [:pointer], :string
+    # int	virDomainSuspend(virDomainPtr domain)
+    attach_function :virDomainSuspend,           [:pointer], :int
+  end
+
+  if Libvirt::readable_version >= '0.1.0'
+    # int	virDomainReboot(virDomainPtr domain, unsigned int flags)
+    attach_function :virDomainReboot,            [:pointer, :uint], :int
+  end
+
+  if Libvirt::readable_version >= '0.1.1'
+    # int	virDomainCreate(virDomainPtr domain)
+    attach_function :virDomainCreate,            [:pointer], :int
+    # int	virDomainGetUUIDString(virDomainPtr domain, char * buf)
+    attach_function :virDomainGetUUIDString,     [:pointer, :string], :int    
+    # int	virDomainSetMemory(virDomainPtr domain, unsigned long memory)
+    attach_function :virDomainSetMemory,         [:pointer, :ulong], :int
+    # int	virDomainUndefine(virDomainPtr domain)
+    attach_function :virDomainUndefine,          [:pointer], :int
+  end
+
+  if Libvirt::readable_version >= '0.1.4'
+    # TODO: virDomainGetVcpus
+    # int	virDomainSetVcpus(virDomainPtr domain, unsigned int nvcpus)
+    attach_function :virDomainSetVcpus,          [:pointer, :uint], :int
+    # int	virDomainPinVcpu(virDomainPtr domain, unsigned int vcpu, unsigned char * cpumap, int maplen)
+    attach_function :virDomainPinVcpu,           [:pointer, :uint, :pointer, :int], :int
+  end
+
+  if Libvirt::readable_version >= '0.1.9'
+    # int	virDomainAttachDevice(virDomainPtr domain, const char * xml)
+    attach_function :virDomainAttachDevice,      [:pointer, :string], :int
+    # int	virDomainCoreDump(virDomainPtr domain, const char * to, int flags)
+    attach_function :virDomainCoreDump,          [:pointer, :string, :int], :int
+    # int	virDomainDetachDevice(virDomainPtr domain, const char * xml)
+    attach_function :virDomainDetachDevice,      [:pointer, :string], :int
+  end
+
+  if Libvirt::readable_version >= '0.2.1'
+    # int	virDomainGetAutostart(virDomainPtr domain, int * autostart)
+    attach_function :virDomainGetAutostart,      [:pointer, :pointer], :int
+    # int	virDomainGetMaxVcpus(virDomainPtr domain)
+    attach_function :virDomainGetMaxVcpus,       [:pointer], :int
+    # int	virDomainSetAutostart(virDomainPtr domain, int autostart)
+    attach_function :virDomainSetAutostart,      [:pointer, :int], :int
+  end
+
+  if Libvirt::readable_version >= '0.3.2'
+    # int	virDomainInterfaceStats(virDomainPtr dom, const char * path, virDomainInterfaceStatsPtr stats, size_t size)
+    attach_function :virDomainInterfaceStats,    [:pointer, :string, :pointer, :size_t], :int
+  end
+
+  if Libvirt::readable_version >= '0.8.0'
+    # int	virDomainManagedSaveRemove(virDomainPtr dom, unsigned int flags)
+    attach_function :virDomainManagedSaveRemove, [:pointer, :uint], :int
+  end
 
   # enum virDomainState {
   #   VIR_DOMAIN_NOSTATE   =  0  : no state

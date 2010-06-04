@@ -11,16 +11,23 @@
 # Ivan Samsonov   <hronya@gmail.com>
 
 require 'ffi'
-require 'libvirt/connection'
-require 'libvirt/domain'
+require 'libvirt/ffi/libvirt'
 
 module Libvirt
-  # major * 1_000_000 + minor * 1_000 + release
-  def version(type = "Xen")
+  def type=(type)
+    @type = type
+  end
+
+  def type
+    @type || "Xen"
+  end
+
+  # see readable_version method
+  def version
     library_version = FFI::MemoryPointer.new(:pointer)
     type_version = FFI::MemoryPointer.new(:pointer)
 
-    result = FFI::Libvirt.virGetVersion(library_version, type, type_version)
+    result = FFI::Libvirt.virGetVersion(library_version, @type, type_version)
     raise ArgumentError, "Failed get version for #{type} connection" if result < 0
 
     [library_version.get_ulong(0), type_version.get_ulong(0)]
@@ -38,4 +45,16 @@ module Libvirt
 
   class RetrieveErroror < Error
   end
+
+  def readable_version
+    return @version if @version
+    library_version = version[0]
+
+      major = library_version / 1_000_000
+      minor = (library_version % 1_000_000) / 1_000
+    release = library_version % 1_000
+
+    @version = "#{major}.#{minor}.#{release}"
+  end
+  module_function :readable_version
 end

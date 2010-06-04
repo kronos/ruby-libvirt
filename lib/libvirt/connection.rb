@@ -14,6 +14,12 @@ module Libvirt
       true
     end
 
+    def open_read_only
+      @connection = FFI::Libvirt::Connection.virConnectOpenReadOnly(@url)
+      raise Libvirt::ConnectionError, "Failed to read-only open #{@url}" if @connection.null?
+      true
+    end
+
     def closed?
       @connection.null?
     end
@@ -98,6 +104,18 @@ module Libvirt
 
       string_ptr = array_names_ptr.read_pointer
       string_ptr.null? ? [] : string_ptr.get_array_of_string(0, domains_count).compact
+    end
+
+    def migrate_domain(domain, flags = FFI::Libvirt::Domain::VIR_MIGRATE_LIVE, bandwidth = 0, dname = "", uri = "")
+      new_domain_ptr = FFI::Libvirt::Domain.virDomainMigrate(domain, @connection, flags, dname, uri, bandwidth)
+      raise Libvirt::Error, "Cannot migrate domain" if new_domain_ptr.null?
+      Libvirt::Domain.new(new_domain_ptr)
+    end
+
+    def restore_domain(path)
+      result = FFI::Libvirt::Domain.virDomainRestore(@domain, path)
+      raise Libvirt::Error, "Cannot perform restore domain from core dump" if result < 0
+      true
     end
 
     def create_domain_linux(xml)

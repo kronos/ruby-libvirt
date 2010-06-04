@@ -8,12 +8,6 @@ module Libvirt
       @domain = domain
     end
 
-    def migrate(connection, flags = FFI::Libvirt::Domain::VIR_MIGRATE_LIVE, bandwidth = 0, dname = "", uri = "")
-      new_domain_ptr = FFI::Libvirt::Domain.virDomainMigrate(@domain, connection, flags, dname, uri, bandwidth)
-      raise Libvirt::Error, "Cannot migrate domain" if new_domain_ptr.null?
-      Domain.new(new_domain_ptr)
-    end
-
     def destroy
       result = FFI::Libvirt::Domain.virDomainDestroy(@domain)
       raise Libvirt::Error, "Cannot free domain object" if result < 0
@@ -56,12 +50,6 @@ module Libvirt
       true
     end
 
-    def restore(path)
-      result = FFI::Libvirt::Domain.virDomainRestore(@domain, path)
-      raise Libvirt::Error, "Cannot perform core dump domain" if result < 0
-      true
-    end
-
     def info
       domain_info_ptr = FFI::MemoryPointer.new(:pointer)
       result = FFI::Libvirt::Domain.virDomainGetInfo(@domain, domain_info_ptr)
@@ -72,7 +60,7 @@ module Libvirt
     def interface_stats(path)
       interface_stats_ptr = FFI::MemoryPointer.new(:pointer)
       result = FFI::Libvirt::Domain.virDomainInterfaceStats(@domain, path, interface_stats_ptr, FFI::Libvirt::DomainInterfaceStats.size)
-      raise Libvirt::Error, "Cannot retrtive domain's interface stats for path='#{path}'" result < 0
+      raise Libvirt::Error, "Cannot retrtive domain's interface stats for path='#{path}'" if result < 0
       FFI::Libvirt::DomainInterfaceStats.new(interface_stats_ptr)
     end
 
@@ -182,6 +170,12 @@ module Libvirt
     def detach_device(xml, flags = 0)
       result = FFI::Libvirt::Domain.virDomainAttachDevice(@domain, xml, flags)
       raise Libvirt::Error, "Cannot deattach device to domain" if result < 0
+      true
+    end
+
+    def save(path)
+      result = FFI::Libvirt::Domain.virDomainSave(@domain, path)
+      raise Libvirt::Error, "Cannot save domain" if result < 0
       true
     end
   end

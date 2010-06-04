@@ -1,0 +1,14 @@
+virDomainGetSchedulerType;
+virDomainGetSchedulerParameters;
+virDomainSetSchedulerParameters;
+virDomainGetConnect;
+virNetworkGetConnect;
+virDomainBlockStats
+virNodeGetCellsFreeMemory;
+virNodeGetFreeMemory;
+virConnectOpenAuth;
+virConnectAuthPtrDefault;
+virStoragePoolGetConnect;
+virStorageVolGetConnect
+virDomainBlockPeek;
+virDomainMemoryPeek;
