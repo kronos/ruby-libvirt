@@ -126,8 +126,10 @@ module Libvirt
       raise Libvirt::Error, "Cannot retrieve vcpus value" if result < 0
 
       info = []
-      0.upto(result) do |i|
-        info << FFI::Libvirt::VcpuInfo.new(vcpu_info_ptr + i * FFI::Libvirt::VcpuInfo.size)
+      if result > 0
+        0.upto(result-1) do |i|
+          info << FFI::Libvirt::VcpuInfo.new(vcpu_info_ptr + i * FFI::Libvirt::VcpuInfo.size)
+        end
       end
 
       info
