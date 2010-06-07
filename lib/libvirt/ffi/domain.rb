@@ -26,7 +26,7 @@ module FFI::Libvirt::Domain
     # int	virDomainShutdown(virDomainPtr domain)
     attach_function :virDomainShutdown,          [:pointer], :int
     # const char *	virDomainGetName(virDomainPtr domain)
-    attach_function :virDomainShutdownirDomainGetName,           [:pointer], :string
+    attach_function :virDomainGetName,           [:pointer], :string
     # int	virDomainSuspend(virDomainPtr domain)
     attach_function :virDomainSuspend,           [:pointer], :int
   end
