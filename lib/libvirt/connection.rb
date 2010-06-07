@@ -119,7 +119,7 @@ module Libvirt
     end
 
     def create_domain(xml)
-      domain = if Libvirt.readable_version >= '0.4.6'
+      domain = if Libvirt.readable_version >= '0.5.0'
         FFI::Libvirt::Connection.virDomainCreateXML(@connection, xml, 0)
       else
         FFI::Libvirt::Connection.virDomainCreateLinux(@connection, xml, 0)

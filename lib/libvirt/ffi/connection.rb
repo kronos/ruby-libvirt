@@ -22,7 +22,7 @@ module FFI::Libvirt::Connection
     # virConnectPtr	virConnectOpenReadOnly(const char * name)
     attach_function :virConnectOpenReadOnly,        [:string], :pointer
 
-    if Libvirt.readable_version < '0.4.6'
+    if Libvirt.readable_version < '0.5.0'
       # virDomainPtr	virDomainCreateLinux(virConnectPtr conn, const char * xmlDesc, unsigned int flags)
       attach_function :virDomainCreateLinux,          [:pointer, :string, :uint], :pointer
     end
@@ -73,7 +73,7 @@ module FFI::Libvirt::Connection
     attach_function :virDomainMigrate,              [:pointer, :pointer, :ulong, :string, :string, :ulong], :pointer
   end
 
-  if Libvirt.readable_version >= '0.4.6'
+  if Libvirt.readable_version >= '0.5.0'
     # virDomainPtr	virDomainCreateXML(virConnectPtr conn, const char * xmlDesc, unsigned int flags)
     attach_function :virDomainCreateXML,          [:pointer, :string, :uint], :pointer
   end
