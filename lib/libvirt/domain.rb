@@ -120,7 +120,7 @@ module Libvirt
       mask_size_in_bytes = vcpus_max / 8
       mask_size_in_bytes += 1 if (vcpus_max % 8) > 0
       cpu_maps = FFI::MemoryPointer.new(:uchar, mask_size_in_bytes)
-      cpu_maps.write_array_of_bytes([255] * mask_size_in_bytes)
+      cpu_maps.write_string(([255] * mask_size_in_bytes).pack("C*"))
       result = FFI::Libvirt::Domain.virDomainGetVcpus(@domain, vcpu_info_ptr, vcpus_max, cpu_maps, mask_size_in_bytes)
       raise Libvirt::Error, "Cannot retrieve vcpus value" if result < 0
 
