@@ -115,13 +115,17 @@ module Libvirt
     end
 
     def vcpus
-      vcpu_info_ptr = FFI::MemoryPointer.new(:pointer)
-      cpu_maps = FFI::MemoryPointer.new(:pointer)
-      result = FFI::Libvirt::Domain.virDomainGetVcpus(@domain, vcpu_info_ptr, 32,
-                                                      cpu_maps, 32)
-      raise Libvirt::Error, "Cannot get vcpus value" if result < 0
+      vcpus_max = max_vcpus
+      vcpu_info_ptr = FFI::MemoryPointer.new(:pointer, vcpus_max)
+      mask_size_in_bytes = vcpus_max / 8
+      mask_size_in_bytes += 1 if (vcpus_max % 8) > 0
+      cpu_maps = FFI::MemoryPointer.new(:uchar, mask_size_in_bytes)
+      cpu_maps.write_array_of_bytes([255] * mask_size_in_bytes)
+      result = FFI::Libvirt::Domain.virDomainGetVcpus(@domain, vcpu_info_ptr, vcpus_max, cpu_maps, mask_size_in_bytes)
+      raise Libvirt::Error, "Cannot retrieve vcpus value" if result < 0
+
       info = []
-      0.upto(32) do |i|
+      0.upto(result) do |i|
         info << FFI::Libvirt::VcpuInfo.new(vcpu_info_ptr + i * FFI::Libvirt::VcpuInfo.size)
       end
 
