@@ -20,7 +20,7 @@ module FFI::Libvirt::Domain
     # int	virDomainResume(virDomainPtr domain)
     attach_function :virDomainResume,            [:pointer], :int
     # int	virDomainSave(virDomainPtr domain, const char * to)
-    attach_function :virDomainSave               [:pointer, :string], :int
+    attach_function :virDomainSave,              [:pointer, :string], :int
     # int	virDomainSetMaxMemory(virDomainPtr domain, unsigned long memory)
     attach_function :virDomainSetMaxMemory,      [:pointer, :ulong], :int
     # int	virDomainShutdown(virDomainPtr domain)
