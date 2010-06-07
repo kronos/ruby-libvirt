@@ -1,6 +1,7 @@
 require 'libvirt/ffi/domain'
 require 'libvirt/ffi/structs/domain_info'
 require 'libvirt/ffi/structs/domain_interface_stats'
+require 'libvirt/ffi/structs/vcpu_info'
 
 module Libvirt
   class Domain
