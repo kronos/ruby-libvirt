@@ -83,8 +83,7 @@ module Libvirt
       result = FFI::Libvirt::Connection.virConnectListDomains(@connection, array_names_ptr, domains_count)
       raise Libvirt::RetrieveError, "Couldn't revtrieve connection list of domain names" if result < 0
 
-      string_ptr = array_names_ptr.read_pointer
-      string_ptr.null? ? [] : string_ptr.get_array_of_string(0, domains_count).compact
+      array_names_ptr.null? ? [] : array_names_ptr.get_array_of_int(0, result).compact
     end
 
     def num_of_defined_domains
@@ -102,8 +101,7 @@ module Libvirt
       result = FFI::Libvirt::Connection.virConnectListDefinedDomains(@connection, array_names_ptr, domains_count)
       raise Libvirt::RetrieveError, "Couldn't revtrieve connection list of defined domain names" if result < 0
 
-      string_ptr = array_names_ptr.read_pointer
-      string_ptr.null? ? [] : string_ptr.get_array_of_string(0, domains_count).compact
+      array_names_ptr.null? ? [] : array_names_ptr.get_array_of_int(0, domains_count).compact
     end
 
     def migrate_domain(domain, flags = FFI::Libvirt::Domain::VIR_MIGRATE_LIVE, bandwidth = 0, dname = "", uri = "")
