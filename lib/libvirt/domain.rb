@@ -4,7 +4,7 @@ require 'libvirt/ffi/structs/domain_interface_stats'
 
 module Libvirt
   class Domain
-    def intialize(domain)
+    def initialize(domain)
       @domain = domain
     end
 
