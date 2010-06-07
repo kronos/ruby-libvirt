@@ -43,7 +43,7 @@ module Libvirt
   class DefinitionError < Error
   end
 
-  class RetrieveErroror < Error
+  class RetrieveError < Error
   end
 
   def readable_version
