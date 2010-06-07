@@ -2,7 +2,7 @@ module FFI::Libvirt::Domain
   extend FFI::Library
   ffi_lib FFI::Libvirt::library_path
 
-  if Libvirt::readable_version >= '0.0.3'
+  if Libvirt.readable_version >= '0.0.3'
     # int	virDomainDestroy		(virDomainPtr domain)
     attach_function :virDomainDestroy,           [:pointer], :int
     # int	virDomainFree(virDomainPtr domain)
@@ -31,12 +31,12 @@ module FFI::Libvirt::Domain
     attach_function :virDomainSuspend,           [:pointer], :int
   end
 
-  if Libvirt::readable_version >= '0.1.0'
+  if Libvirt.readable_version >= '0.1.0'
     # int	virDomainReboot(virDomainPtr domain, unsigned int flags)
     attach_function :virDomainReboot,            [:pointer, :uint], :int
   end
 
-  if Libvirt::readable_version >= '0.1.1'
+  if Libvirt.readable_version >= '0.1.1'
     # int	virDomainCreate(virDomainPtr domain)
     attach_function :virDomainCreate,            [:pointer], :int
     # int	virDomainGetUUIDString(virDomainPtr domain, char * buf)
@@ -47,7 +47,7 @@ module FFI::Libvirt::Domain
     attach_function :virDomainUndefine,          [:pointer], :int
   end
 
-  if Libvirt::readable_version >= '0.1.4'
+  if Libvirt.readable_version >= '0.1.4'
     # TODO: virDomainGetVcpus
     # int	virDomainSetVcpus(virDomainPtr domain, unsigned int nvcpus)
     attach_function :virDomainSetVcpus,          [:pointer, :uint], :int
@@ -55,7 +55,7 @@ module FFI::Libvirt::Domain
     attach_function :virDomainPinVcpu,           [:pointer, :uint, :pointer, :int], :int
   end
 
-  if Libvirt::readable_version >= '0.1.9'
+  if Libvirt.readable_version >= '0.1.9'
     # int	virDomainAttachDevice(virDomainPtr domain, const char * xml)
     attach_function :virDomainAttachDevice,      [:pointer, :string], :int
     # int	virDomainCoreDump(virDomainPtr domain, const char * to, int flags)
@@ -64,7 +64,7 @@ module FFI::Libvirt::Domain
     attach_function :virDomainDetachDevice,      [:pointer, :string], :int
   end
 
-  if Libvirt::readable_version >= '0.2.1'
+  if Libvirt.readable_version >= '0.2.1'
     # int	virDomainGetAutostart(virDomainPtr domain, int * autostart)
     attach_function :virDomainGetAutostart,      [:pointer, :pointer], :int
     # int	virDomainGetMaxVcpus(virDomainPtr domain)
@@ -73,12 +73,12 @@ module FFI::Libvirt::Domain
     attach_function :virDomainSetAutostart,      [:pointer, :int], :int
   end
 
-  if Libvirt::readable_version >= '0.3.2'
+  if Libvirt.readable_version >= '0.3.2'
     # int	virDomainInterfaceStats(virDomainPtr dom, const char * path, virDomainInterfaceStatsPtr stats, size_t size)
     attach_function :virDomainInterfaceStats,    [:pointer, :string, :pointer, :size_t], :int
   end
 
-  if Libvirt::readable_version >= '0.8.0'
+  if Libvirt.readable_version >= '0.8.0'
     # int	virDomainManagedSaveRemove(virDomainPtr dom, unsigned int flags)
     attach_function :virDomainManagedSaveRemove, [:pointer, :uint], :int
   end

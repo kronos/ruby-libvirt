@@ -5,7 +5,7 @@ module FFI::Libvirt::StorageVol
   extend FFI::Library
   ffi_lib FFI::Libvirt::library_path
 
-  if Libvirt::readable_version >= '0.4.1'
+  if Libvirt.readable_version >= '0.4.1'
     # virStoragePoolPtr	virStoragePoolLookupByVolume(virStorageVolPtr vol)
     attach_function :virStoragePoolLookupByVolume, [:pointer], :pointer
     # virStorageVolPtr	virStorageVolLookupByName(virStoragePoolPtr pool, const char * name)

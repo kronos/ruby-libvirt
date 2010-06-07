@@ -4,7 +4,7 @@ module FFI::Libvirt::Network
   extend FFI::Library
   ffi_lib FFI::Libvirt::library_path
 
-  if Libvirt::readable_version >= '0.2.0'
+  if Libvirt.readable_version >= '0.2.0'
     # int	virConnectNumOfNetworks(virConnectPtr conn)
     attach_function :virConnectNumOfNetworks, [:pointer], :int
     # int	virConnectListNetworks(virConnectPtr conn, char ** const names, int maxnames)
@@ -39,7 +39,7 @@ module FFI::Libvirt::Network
     attach_function :virNetworkGetBridgeName, [:pointer, :pointer], :int
   end
 
-  if Libvirt::readable_version >= '0.2.1'
+  if Libvirt.readable_version >= '0.2.1'
     # int	virNetworkGetAutostart		(virNetworkPtr network, int * autostart)
     attach_function :virNetworkGetAutostart, [:pointer, :pointer], :int
     # int	virNetworkSetAutostart(virNetworkPtr network, int autostart)

@@ -118,8 +118,8 @@ module Libvirt
       true
     end
 
-    def create_domain_linux(xml)
-      domain = FFI::Libvirt::Connection.virConnectListDefinedDomains(@connection, xml, 0)
+    def create_linux_domain(xml)
+      domain = FFI::Libvirt::Connection.virDomainCreateLinux(@connection, xml, 0)
       raise Libvirt::Error, "Couldn't create linux domain" if result < 0
       Libvirt::Domain.new(domain)
     end

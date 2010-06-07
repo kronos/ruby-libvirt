@@ -1,4 +1,4 @@
-if Libvirt::readable_version >= '0.1.0'
+if Libvirt.readable_version >= '0.1.0'
   require 'libvirt/ffi/structs/node_info'
 end
 
@@ -6,7 +6,7 @@ module FFI::Libvirt::Connection
   extend FFI::Library
   ffi_lib FFI::Libvirt::library_path
 
-  if Libvirt::readable_version >= '0.0.3'
+  if Libvirt.readable_version >= '0.0.3'
     # int	virConnectClose(virConnectPtr conn)
     attach_function :virConnectClose,               [:pointer], :int
     # const char *	virConnectGetType(virConnectPtr conn)
@@ -31,12 +31,12 @@ module FFI::Libvirt::Connection
     attach_function :virDomainRestore,           [:pointer, :string], :int
   end
 
-  if Libvirt::readable_version >= '0.1.0'
+  if Libvirt.readable_version >= '0.1.0'
     # int	virNodeGetInfo(virConnectPtr conn, virNodeInfoPtr info)
     attach_function :virNodeGetInfo,                [:pointer, :pointer], :int
   end
 
-  if Libvirt::readable_version >= '0.1.1'
+  if Libvirt.readable_version >= '0.1.1'
     # virDomainPtr	virDomainDefineXML(virConnectPtr conn, const char * xml)
     attach_function :virDomainDefineXML,            [:pointer, :string], :pointer
     # int	virConnectListDefinedDomains(virConnectPtr conn, char ** const names, int maxnames)
@@ -45,26 +45,26 @@ module FFI::Libvirt::Connection
     attach_function :virDomainLookupByUUIDString,   [:pointer, :string], :pointer
   end
 
-  if Libvirt::readable_version >= '0.1.5'
+  if Libvirt.readable_version >= '0.1.5'
     # int	virConnectNumOfDefinedDomains(virConnectPtr conn)
     attach_function :virConnectNumOfDefinedDomains, [:pointer], :int
   end
 
-  if Libvirt::readable_version >= '0.2.1'
+  if Libvirt.readable_version >= '0.2.1'
     # char *	virConnectGetCapabilities(virConnectPtr conn)
     attach_function :virConnectGetCapabilities,     [:pointer], :string
     # int	virConnectGetMaxVcpus(virConnectPtr conn, const char * type)
     attach_function :virConnectGetMaxVcpus,         [:pointer, :string], :int
   end
 
-  if Libvirt::readable_version >= '0.3.0'
+  if Libvirt.readable_version >= '0.3.0'
     # char *	virConnectGetHostname(virConnectPtr conn)
     attach_function :virConnectGetHostname,         [:pointer], :string
     # char *	virConnectGetURI(virConnectPtr conn)
     attach_function :virConnectGetURI,              [:pointer], :string
   end
 
-  if Libvirt::readable_version >= '0.3.2'
+  if Libvirt.readable_version >= '0.3.2'
     # virDomainPtr	virDomainMigrate	(virDomainPtr domain, virConnectPtr dconn, unsigned long flags, const char * dname, const char * uri, unsigned long bandwidth)
     attach_function :virDomainMigrate,      [:pointer, :pointer, :ulong, :string, :string, :ulong], :pointer
   end

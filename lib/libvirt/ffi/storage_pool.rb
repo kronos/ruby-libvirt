@@ -5,7 +5,7 @@ module FFI::Libvirt::StoragePool
   extend FFI::Library
   ffi_lib FFI::Libvirt::library_path
 
-  if Libvirt::readable_version >= '0.4.1'
+  if Libvirt.readable_version >= '0.4.1'
     # int	virConnectNumOfStoragePools	(virConnectPtr conn)
     attach_function :virConnectNumOfStoragePools, [:pointer], :int
     # int	virConnectNumOfDefinedStoragePools	(virConnectPtr conn)
@@ -54,7 +54,7 @@ module FFI::Libvirt::StoragePool
     attach_function :virStoragePoolListVolumes, [:pointer, :pointer, :int], :int
   end
 
-  if Libvirt::readable_version >= '0.4.5'
+  if Libvirt.readable_version >= '0.4.5'
     # char *	virConnectFindStoragePoolSources(virConnectPtr conn, const char * type, const char * srcSpec,
     #                                            unsigned int flags)
     attach_function :virConnectFindStoragePoolSources, [:pointer, :string, :string, :uint], :string
