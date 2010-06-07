@@ -40,7 +40,7 @@ module FFI::Libvirt::Domain
     # int	virDomainCreate(virDomainPtr domain)
     attach_function :virDomainCreate,            [:pointer], :int
     # int	virDomainGetUUIDString(virDomainPtr domain, char * buf)
-    attach_function :virDomainGetUUIDString,     [:pointer, :string], :int    
+    attach_function :virDomainGetUUIDString,     [:pointer, :string], :int
     # int	virDomainSetMemory(virDomainPtr domain, unsigned long memory)
     attach_function :virDomainSetMemory,         [:pointer, :ulong], :int
     # int	virDomainUndefine(virDomainPtr domain)
@@ -49,6 +49,10 @@ module FFI::Libvirt::Domain
 
   if Libvirt.readable_version >= '0.1.4'
     # TODO: virDomainGetVcpus
+    # int virDomainGetVcpus (virDomainPtr domain, virVcpuInfoPtr info, int maxinfo,
+    #     unsigned char * cpumaps, int maplen)
+    attach_function :virDomainGetVcpus, [:pointer, :pointer, :int, :pointer, :int], :int
+
     # int	virDomainSetVcpus(virDomainPtr domain, unsigned int nvcpus)
     attach_function :virDomainSetVcpus,          [:pointer, :uint], :int
     # int	virDomainPinVcpu(virDomainPtr domain, unsigned int vcpu, unsigned char * cpumap, int maplen)

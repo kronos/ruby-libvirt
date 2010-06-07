@@ -114,6 +114,20 @@ module Libvirt
       vcpus
     end
 
+    def vcpus
+      vcpu_info_ptr = FFI::MemoryPointer.new(:pointer)
+      cpu_maps = FFI::MemoryPointer.new(:pointer)
+      result = FFI::Libvirt::Domain.virDomainGetVcpus(@domain, vcpu_info_ptr, 32,
+                                                      cpu_maps, 32)
+      raise Libvirt::Error, "Cannot get vcpus value" if result < 0
+      info = []
+      0.upto(32) do |i|
+        info << FFI::Libvirt::VcpuInfo.new(vcpu_info_ptr + i * FFI::Libvirt::VcpuInfo.size)
+      end
+
+      info
+    end
+
     def vcpus=(vcpus)
       vcpus = FFI::Libvirt::Domain.virDomainSetVcpus(@domain, vcpus)
       raise Libvirt::Error, "Cannot set domain's vcpus value" if vcpus < 0
