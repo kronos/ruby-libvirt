@@ -21,14 +21,18 @@ module FFI::Libvirt::Connection
     attach_function :virConnectOpen,                [:string], :pointer
     # virConnectPtr	virConnectOpenReadOnly(const char * name)
     attach_function :virConnectOpenReadOnly,        [:string], :pointer
-    # virDomainPtr	virDomainCreateLinux(virConnectPtr conn, const char * xmlDesc, unsigned int flags)
-    attach_function :virDomainCreateLinux,          [:pointer, :string, :uint], :int
+
+    if Libvirt.readable_version < '0.4.6'
+      # virDomainPtr	virDomainCreateLinux(virConnectPtr conn, const char * xmlDesc, unsigned int flags)
+      attach_function :virDomainCreateLinux,          [:pointer, :string, :uint], :pointer
+    end
+
     # virDomainPtr	virDomainLookupByID(virConnectPtr conn, int id)
     attach_function :virDomainLookupByID,           [:pointer, :int], :pointer
     # virDomainPtr	virDomainLookupByName(virConnectPtr conn, const char * name)
     attach_function :virDomainLookupByName,         [:pointer, :string], :pointer
     # int	virDomainRestore(virConnectPtr conn, const char * from)
-    attach_function :virDomainRestore,           [:pointer, :string], :int
+    attach_function :virDomainRestore,              [:pointer, :string], :int
   end
 
   if Libvirt.readable_version >= '0.1.0'
@@ -66,6 +70,11 @@ module FFI::Libvirt::Connection
 
   if Libvirt.readable_version >= '0.3.2'
     # virDomainPtr	virDomainMigrate	(virDomainPtr domain, virConnectPtr dconn, unsigned long flags, const char * dname, const char * uri, unsigned long bandwidth)
-    attach_function :virDomainMigrate,      [:pointer, :pointer, :ulong, :string, :string, :ulong], :pointer
+    attach_function :virDomainMigrate,              [:pointer, :pointer, :ulong, :string, :string, :ulong], :pointer
+  end
+
+  if Libvirt.readable_version >= '0.4.6'
+    # virDomainPtr	virDomainCreateXML(virConnectPtr conn, const char * xmlDesc, unsigned int flags)
+    attach_function :virDomainCreateXML,          [:pointer, :string, :uint], :pointer
   end
 end
