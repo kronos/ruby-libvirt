@@ -6,7 +6,7 @@
 #   unsigned long long  cpuTime  : the CPU time used in nanoseconds
 # }
 
-class FFI::Libvirt::NodeInfo < FFI::Struct
+class FFI::Libvirt::DomainInfo < FFI::Struct
   layout :state,     :uchar,
          :maxMem,    :ulong,
          :memory,    :ulong,
