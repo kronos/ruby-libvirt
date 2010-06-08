@@ -56,7 +56,7 @@ module Libvirt
     end
 
     def get_node_info
-      node_info_ptr = FFI::MemoryPointer.new(:pointer)
+      node_info_ptr = FFI::MemoryPointer.new(:pointer, FFI::Libvirt::NodeInfo.size)
       result = FFI::Libvirt::Connection.virNodeGetInfo(@connection, node_info_ptr)
       raise Libvirt::RetrieveError, "Couldn't revtrieve connection node info" if result < 0
       FFI::Libvirt::NodeInfo.new(node_info_ptr)
