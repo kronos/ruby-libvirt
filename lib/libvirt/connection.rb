@@ -107,7 +107,7 @@ module Libvirt
     def migrate_domain(domain, flags = FFI::Libvirt::Domain::VIR_MIGRATE_LIVE, bandwidth = 0, dname = "", uri = "")
       new_domain_ptr = FFI::Libvirt::Domain.virDomainMigrate(domain, @connection, flags, dname, uri, bandwidth)
       raise Libvirt::Error, "Cannot migrate domain" if new_domain_ptr.null?
-      Libvirt::Domain.new(new_domain_ptr, @connection)
+      Libvirt::Domain.new(new_domain_ptr, self)
     end
 
     def restore_domain(path)
@@ -123,31 +123,31 @@ module Libvirt
         FFI::Libvirt::Connection.virDomainCreateLinux(@connection, xml, 0)
       end
       raise Libvirt::Error, "Couldn't create domain" if domain.null?
-      Libvirt::Domain.new(domain, @connection)
+      Libvirt::Domain.new(domain, self)
     end
 
     def get_domain_by_name(name)
       domain = FFI::Libvirt::Connection.virDomainLookupByName(@connection, name)
       raise Libvirt::RetrieveError, "Can not find domain with name '#{name}'" if domain.null?
-      Libvirt::Domain.new(domain, @connection)
+      Libvirt::Domain.new(domain, self)
     end
 
     def get_domain_by_id(id)
       domain = FFI::Libvirt::Connection.virDomainLookupByID(@connection, id)
       raise Libvirt::RetrieveError, "Can not find domain with id '#{id}'" if domain.null?
-      Libvirt::Domain.new(domain, @connection)
+      Libvirt::Domain.new(domain, self)
     end
 
     def get_domain_by_uuid(uuid)
       domain = FFI::Libvirt::Connection.virDomainLookupByID(@connection, uuid)
       raise Libvirt::RetrieveError, "Can not find domain with uuid '#{uuid}'" if domain.null?
-      Libvirt::Domain.new(domain, @connection)
+      Libvirt::Domain.new(domain, self)
     end
 
     def define_domain_xml(xml)
       domain = FFI::Libvirt::Connection.virDomainDefineXML(@connection, xml)
       raise Libvirt::DefinitionError, "Can not define domain with xml:\n#{xml}" if domain.null?
-      Libvirt::Domain.new(domain, @connection)
+      Libvirt::Domain.new(domain, self)
     end
 
     def close
