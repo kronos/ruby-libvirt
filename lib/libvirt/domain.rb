@@ -121,7 +121,7 @@ module Libvirt
 
       vcpu_info_ptr = FFI::MemoryPointer.new(:pointer, vcpus * FFI::Libvirt::VcpuInfo.size)
       node_info = @connection.get_node_info
-      cpumaplen = (nodeinfo[:nodes] * nodeinfo[:sockets] * nodeinfo[:cores] * nodeinfo[:threads] + 7) / 8
+      cpumaplen = (node_info[:nodes] * node_info[:sockets] * node_info[:cores] * node_info[:threads] + 7) / 8
       cpumap = FFI::MemoryPointer.new(:uchar, vcpus * cpumaplen)
 
       result = FFI::Libvirt::Domain.virDomainGetVcpus(@domain, vcpu_info_ptr, vcpus, cpumap, cpumaplen)
