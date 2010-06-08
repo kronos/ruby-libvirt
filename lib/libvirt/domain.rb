@@ -53,10 +53,10 @@ module Libvirt
     end
 
     def info
-      domain_info_ptr = FFI::MemoryPointer.new(:pointer, FFI::Libvirt::NodeInfo.size)
+      domain_info_ptr = FFI::MemoryPointer.new(:pointer, FFI::Libvirt::DomainInfo.size)
       result = FFI::Libvirt::Domain.virDomainGetInfo(@domain, domain_info_ptr)
       raise Libvirt::Error, "Cannot retrieve domain info" if result < 0
-      FFI::Libvirt::NodeInfo.new(domain_info_ptr)
+      FFI::Libvirt::DomainInfo.new(domain_info_ptr)
     end
 
     def interface_stats(path)
