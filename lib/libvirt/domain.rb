@@ -5,8 +5,9 @@ require 'libvirt/ffi/structs/vcpu_info'
 
 module Libvirt
   class Domain
-    def initialize(domain)
+    def initialize(domain, connection)
       @domain = domain
+      @connection = connection
     end
 
     def destroy
@@ -78,7 +79,7 @@ module Libvirt
     end
 
     def uuid
-      uuid = MemoryPointer.new(:char, 36)
+      uuid = FFI::MemoryPointer.new(:char, 36)
       result = FFI::Libvirt::Domain.virDomainGetUUIDString(@domain, uuid)
       raise Libvirt::Error, "Cannot retrieve domain's uuid" if result < 0
       uuid.read_string
@@ -116,26 +117,39 @@ module Libvirt
     end
 
     def vcpus
-      vcpus_max = max_vcpus
-      vcpu_info_ptr = FFI::MemoryPointer.new(:pointer, vcpus_max)
-      mask_size_in_bytes = vcpus_max / 8
-      mask_size_in_bytes += 1 if (vcpus_max % 8) > 0
-      cpu_maps = FFI::MemoryPointer.new(:uchar, mask_size_in_bytes)
-      cpu_maps.write_string(([255] * mask_size_in_bytes).pack("C*"))
-      result = FFI::Libvirt::Domain.virDomainGetVcpus(@domain, vcpu_info_ptr, vcpus_max, cpu_maps, mask_size_in_bytes)
+      vcpus = info[:nrVirtCpu]
+
+      vcpu_info_ptr = FFI::MemoryPointer.new(:pointer, vcpus * FFI::Libvirt::VcpuInfo.size)
+      node_info = @connection.get_node_info
+      cpumaplen = (nodeinfo[:nodes] * nodeinfo[:sockets] * nodeinfo[:cores] * nodeinfo[:threads] + 7) / 8
+      cpumap = FFI::MemoryPointer.new(:uchar, vcpus * cpumaplen)
+
+      result = FFI::Libvirt::Domain.virDomainGetVcpus(@domain, vcpu_info_ptr, vcpus, cpumap, cpumaplen)
       raise Libvirt::Error, "Cannot retrieve vcpus value" if result < 0
 
       info = []
-      if result > 0
-        0.upto(result-1) do |i|
-          info << FFI::Libvirt::VcpuInfo.new(vcpu_info_ptr + i * FFI::Libvirt::VcpuInfo.size)
-        end
+      0.upto(result-1) do |i|
+        info << FFI::Libvirt::VcpuInfo.new(vcpu_info_ptr + i * FFI::Libvirt::VcpuInfo.size)
       end
 
       info
     end
 
-    def vcpus=(vcpus)
+    def vcpus_count
+      vcpus = info[:nrVirtCpu]
+
+      vcpu_info_ptr = FFI::MemoryPointer.new(:pointer, vcpus * FFI::Libvirt::VcpuInfo.size)
+      node_info = @connection.get_node_info
+      cpumaplen = (nodeinfo[:nodes] * nodeinfo[:sockets] * nodeinfo[:cores] * nodeinfo[:threads] + 7) / 8
+      cpumap = FFI::MemoryPointer.new(:uchar, vcpus * cpumaplen)
+
+      result = FFI::Libvirt::Domain.virDomainGetVcpus(@domain, vcpu_info_ptr, vcpus, cpumap, cpumaplen)
+      raise Libvirt::Error, "Cannot retrieve vcpus value" if result < 0
+
+      result
+    end
+
+    def vcpus_count=(vcpus)
       vcpus = FFI::Libvirt::Domain.virDomainSetVcpus(@domain, vcpus)
       raise Libvirt::Error, "Cannot set domain's vcpus value" if vcpus < 0
       vcpus

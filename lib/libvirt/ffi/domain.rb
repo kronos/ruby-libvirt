@@ -48,7 +48,6 @@ module FFI::Libvirt::Domain
   end
 
   if Libvirt.readable_version >= '0.1.4'
-    # TODO: virDomainGetVcpus
     # int virDomainGetVcpus (virDomainPtr domain, virVcpuInfoPtr info, int maxinfo,
     #     unsigned char * cpumaps, int maplen)
     attach_function :virDomainGetVcpus, [:pointer, :pointer, :int, :pointer, :int], :int
